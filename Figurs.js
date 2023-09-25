@@ -54,6 +54,7 @@ function drawTriangle(pointArray, aContext) {
     drawCanvas(aContext, pointArray);
 }
 
+
 function drawReactangle(width, heigth, aContext, vertex) {
    aContext.beginPath();
    aContext.rect(vertex.x, vertex, width, heigth);
@@ -107,6 +108,15 @@ function xCoordinate(width, heigth, aContext) {
 }
 
 function yCoordinate(width, heigth, aContext) {
+    for (let i = 10; i < heigth; i += 50) {
+
+        aContext.moveTo(0, i);
+        aContext.lineTo(width, i);
+        aContext.closePath();
+    }
+}
+
+function newYCoordinate(width, heigth, aContext) {
     for (let i = 10; i < heigth; i += 50) {
 
         aContext.moveTo(0, i);
