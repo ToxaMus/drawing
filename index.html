@@ -1,0 +1,114 @@
+<html>
+
+<head>
+    <link href="main.css" rel="stylesheet">
+    <script src="Figurs.js"></script>
+</head>
+
+<body>
+    <div style="margin: 10px;">
+        <canvas id="lineY" width="40" height="800"></canvas>
+        <canvas id="canvas" width="800" height="800"></canvas>
+    </div>
+
+    <canvas id="lineX" width="800" height="33" style="margin-bottom: 1em"></canvas>
+
+    <div> Геометрическая фигура:
+        <select id="geometryType">
+            <option value="line">Линия</option>
+            <option value="triangle">Треугольник</option>
+            <option value="rectangle">Прямоугольник</option>
+        </select>
+    </div>
+
+    <div>
+        <div id="message"> Задайте координату точки:</div>
+        <input type="text" id="coordinateInput">
+    </div>
+</body>
+
+<script>
+
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    let canvasWidth = 800;
+    let canvasHeight = 800;
+
+    coordinateTable(canvasWidth, canvasHeight, context)
+    rulerY();
+    rulerX();
+
+    const geometryTypeElement = document.getElementById("geometryType");
+
+    let geometryType;
+    let polygon = [];
+    let num;
+
+    geometryTypeElement.addEventListener('change', (event) => {
+        geometryType = geometryTypeElement.value
+        num = 0
+        polygon = []
+    })
+
+    let coord;
+
+    const inputElement = document.getElementById("coordinateInput");
+    let width
+    let height
+
+    inputElement.addEventListener('keyup', (event) => {
+        if (clickOnEnter(event)) {
+            coord = stringToCoordinate(inputElement.value);
+            if (geometryType === 'line' || geometryType === undefined) {
+                if (!errorCoordinate(coord)) {
+                    polygon.push({ x: coord[0], y: coord[1] });
+                    drawLine(polygon, context);
+                    num++
+                }
+            }
+
+            if (geometryType === 'triangle') {
+                polygon.push({ x: coord[0], y: coord[1] });
+
+                drawTriangle(polygon, context)
+            }
+
+            if (geometryType === 'rectangle') {
+                if (polygon.length === 0) {
+                    if (!errorCoordinate(coord)) {
+                        polygon.push({ x: coord[0], y: coord[1] })
+                        document.getElementById("message").innerHTML = "Задайте длину"
+                    }
+                }
+                if (num > 0) {
+                    if (!errorNigativeData(coord[0]) && !Number.isNaN(coord[0])) {
+
+                        if (num === 1) {
+                            width = coord[0]
+                            document.getElementById("message").innerHTML = "Задайте ширину"
+                        }
+
+                        if (num === 2) {
+                            height = coord[0]
+                        }
+
+                    }
+                }
+
+                if (!errorNigativeData(coord[0]) && polygon.length > 0 && !Number.isNaN(coord[0])) {
+                    num++
+                }
+
+                if (!Number.isNaN(height)) {
+                    let vertex = polygon[0];
+                    drawReactangle(vertex, canvas, width, height)
+                }
+            }
+            inputElement.value = ''
+        }
+    })
+
+</script>
+
+</html>

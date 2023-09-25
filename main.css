@@ -1,0 +1,13 @@
+#canvas  {
+    border: 1px solid silver;
+    margin-left: 1em;
+}
+
+#lineY {
+    border: 1px solid black;
+}
+
+#lineX {
+    border: 1px solid black;
+    margin-left: 4em;
+}
