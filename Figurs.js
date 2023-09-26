@@ -19,7 +19,7 @@ function drawLine(pointArray, aContext) {
         vertex = pointArray[i]
         aContext.lineTo(vertex.x, vertex.y);
     }
-
+я 
     aContext.stroke();
     aContext.closePath();
 
@@ -55,7 +55,7 @@ function drawTriangle(pointArray, aContext) {
 }
 
 
-function drawReactangle(width, heigth, aContext, vertex) {
+function drawReactangle(vertex, aContext, width, heigth) {
    aContext.beginPath();
    aContext.rect(vertex.x, vertex, width, heigth);
    aContext.closePath()
@@ -100,7 +100,7 @@ function coordinateTable(width, heigth, aContext) {
 }
 
 function xCoordinate(width, heigth, aContext) {
-    for (let i = 10; i < width; i += 50) {
+    for (let i = 0; i < width; i += 50) {
         aContext.moveTo(i, 0);
         aContext.lineTo(i, heigth);
         aContext.closePath();
@@ -108,17 +108,7 @@ function xCoordinate(width, heigth, aContext) {
 }
 
 function yCoordinate(width, heigth, aContext) {
-    for (let i = 10; i < heigth; i += 50) {
-
-        aContext.moveTo(0, i);
-        aContext.lineTo(width, i);
-        aContext.closePath();
-    }
-}
-
-function newYCoordinate(width, heigth, aContext) {
-    for (let i = 10; i < heigth; i += 50) {
-
+    for (let i = 0; i < heigth; i += 50) {
         aContext.moveTo(0, i);
         aContext.lineTo(width, i);
         aContext.closePath();
@@ -136,7 +126,7 @@ function rulerY() {
     for (let i = 0; i < 800; i += 50) {
         if (i != 0 && i != 800) {
             numberToString = i.toString();
-            context.fillText(numberToString, 7, (800 - i) + 12)
+            context.fillText(numberToString, 7, (800 - i))
         }
     }
 }
@@ -152,7 +142,7 @@ function rulerX() {
     for (let i = 0; i < 800; i += 50) {
         if (i != 0 && i != 800) {
             numberToString = i.toString();
-            context.fillText(numberToString, i + 8, 19)
+            context.fillText(numberToString, i, 19)
         }
     }
 }
