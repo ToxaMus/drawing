@@ -19,7 +19,7 @@ function drawLine(pointArray, aContext) {
         vertex = pointArray[i]
         aContext.lineTo(vertex.x, vertex.y);
     }
-я 
+
     aContext.stroke();
     aContext.closePath();
 
@@ -55,10 +55,22 @@ function drawTriangle(pointArray, aContext) {
 }
 
 
-function drawReactangle(vertex, aContext, width, heigth) {
-   aContext.beginPath();
-   aContext.rect(vertex.x, vertex, width, heigth);
-   aContext.closePath()
+function drawReactangle(pointArray, aContext) {
+    debugger
+    pointArray = scaledY(pointArray);
+    let firstPoint = pointArray[0];
+    let secondPoint = pointArray[1]
+
+    aContext.beginPath();
+    aContext.strokeStyle = "black"
+        
+    aContext.moveTo(firstPoint.x, firstPoint.y);
+    aContext.lineTo(secondPoint.x, firstPoint.y);
+    aContext.lineTo(secondPoint.x, secondPoint.y);
+    aContext.lineTo(secondPoint.x, firstPoint.y);
+    aContext.lineTo(firstPoint.x, firstPoint.y);
+
+    aContext.stroke();
 }
 
 function scaledY(array) {
