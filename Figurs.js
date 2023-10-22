@@ -73,6 +73,17 @@ function drawReactangle(pointArray, aContext) {
     aContext.stroke();
 }
 
+function drawCircle(pointArray, rad, aContext) {
+    pointArray = scaledY(pointArray);
+    let vertex = pointArray[0];
+
+    aContext.beginPath();
+    aContext.strokeStyle = "black"
+    aContext.arc(vertex.x, vertex.y, rad, 0, 2*Math.PI);
+    aContext.stroke() 
+    
+}
+
 function scaledY(array) {
     for (let i = 0; i < array.length; i++) {
         vertex = array[i]

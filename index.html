@@ -18,6 +18,7 @@
             <option value="line">Линия</option>
             <option value="triangle">Треугольник</option>
             <option value="rectangle">Прямоугольник</option>
+            <option value="circle">круг</option>
         </select>
     </div>
 
@@ -43,28 +44,27 @@
 
     let geometryType;
     let polygon = [];
-    let num;
+    let num = 0;
 
     geometryTypeElement.addEventListener('change', (event) => {
-        geometryType = geometryTypeElement.value
-        num = 0
-        polygon = []
+        geometryType = geometryTypeElement.value;
+        num = 0;
+        polygon = [];
     })
 
     let coord;
+    let radius;
 
     const inputElement = document.getElementById("coordinateInput");
-    let width
-    let height
 
     inputElement.addEventListener('keyup', (event) => {
         if (clickOnEnter(event)) {
             coord = stringToCoordinate(inputElement.value);
+
             if (geometryType === 'line' || geometryType === undefined) {
                 if (!errorCoordinate(coord)) {
                     polygon.push({ x: coord[0], y: coord[1] });
                     drawLine(polygon, context);
-                    num++
                 }
             }
 
@@ -73,20 +73,40 @@
 
                 drawTriangle(polygon, context)
             }
-            
+
             if (geometryType === 'rectangle') {
                 if (polygon.length < 2) {
                     if (!errorCoordinate(coord)) {
                         polygon.push({ x: coord[0], y: coord[1] })
                         document.getElementById("message").innerHTML = "Задайте накрестлежащую координату"
                     }
- 
+
                     if (polygon.length == 2) {
-                         drawReactangle(polygon, context)
-                         polygon = [];
-                     }
+                        drawReactangle(polygon, context)
+                        polygon = [];
+                    }
                 }
-    
+            }
+
+            if (geometryType === 'circle') {
+                if (polygon.length < 1) {
+                    if (!errorCoordinate(coord)) {
+                        polygon.push({ x: coord[0], y: coord[1] })
+                        document.getElementById("message").innerHTML = "Задайте радиус"
+                    }
+                }
+
+                if (num == 1 && !errorNigativeData(coord[0])) {
+                    radius = coord[0];
+                    drawCircle(polygon, radius, context)
+
+                    polygon = [];
+                    num = 0;
+                }
+
+                if (polygon.length == 1) {
+                    num = 1;
+                }
             }
             inputElement.value = ''
         }
