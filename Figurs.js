@@ -41,8 +41,6 @@ function drawTriangle(pointArray, aContext) {
     aContext.closePath();
 }
 
-
-
 function drawReactangle(pointArray, aContext) {
     pointArray = scaledY(pointArray);
     let firstPoint = pointArray[0];
@@ -82,6 +80,33 @@ function drawPoint(array, aContext) {
         vertex = array[i]
         aContext.lineTo(vertex.x, vertex.y);
     }    
+}
+
+function drawHrombus(pointArray, aContext) {
+    pointArray = scaledY(pointArray);
+
+    aContext.beginPath();
+    aContext.strokeStyle = "black"
+    aContext.lineWidth = 1;
+   
+    let vertex = pointArray[2];
+    aContext.moveTo(vertex.x, vertex.y);
+
+    vertex = pointArray[3];
+    aContext.lineTo(vertex.x, vertex.y);
+    
+    vertex = pointArray[1];
+    aContext.lineTo(vertex.x, vertex.y);
+
+    vertex = pointArray[2];
+    aContext.lineTo(vertex.x, vertex.y);
+
+    vertex = pointArray[0];
+    aContext.lineTo(vertex.x, vertex.y);
+    
+    vertex = pointArray[3];
+    aContext.lineTo(vertex.x, vertex.y);
+    aContext.stroke();  
 }
 
 function scaledY(array) {

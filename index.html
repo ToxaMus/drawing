@@ -19,6 +19,7 @@
             <option value="triangle">Треугольник</option>
             <option value="rectangle">Прямоугольник</option>
             <option value="circle">круг</option>
+            <option value="rhombus">ромб</option>
         </select>
     </div>
 
@@ -50,7 +51,12 @@
         geometryType = geometryTypeElement.value;
         num = 0;
         polygon = [];
-        document.getElementById("message").innerHTML = "Задайте координату точки:"
+
+        if (geometryType === "rhombus") {
+            document.getElementById("message").innerHTML = "Задайте координаты первой диагонали:"
+        } else {
+            document.getElementById("message").innerHTML = "Задайте координату точки:"
+        }
     })
 
     let coord;
@@ -72,14 +78,14 @@
             if (geometryType === 'triangle') {
                 if (!errorCoordinate(coord)) {
                     polygon.push({ x: coord[0], y: coord[1] })
-                    document.getElementById("message").innerHTML = "Задайте следущую координату через ';'" 
+                    document.getElementById("message").innerHTML = "Задайте следущую координату через ';'"
                 }
-                
+
                 if (polygon.length === 3) {
                     drawTriangle(polygon, context);
                     polygon = []
                     document.getElementById("message").innerHTML = "Задайте координату точки:"
-               }
+                }
             }
 
             if (geometryType === 'rectangle') {
@@ -118,7 +124,31 @@
                     num = 1;
                 }
             }
-            inputElement.value = ''
+
+            if (geometryType === "rhombus") {
+                if (polygon.length < 4) {
+                    if (!errorCoordinate(coord)) {
+                        polygon.push({ x: coord[0], y: coord[1] });
+
+                        if (polygon.length > 2) {
+                            document.getElementById("message").innerHTML = "Задайте координаты второй диагонали:"
+                        }
+
+                    }
+                    
+                    if (polygon.length === 2) {
+                        drawLine(polygon, context)
+                    }
+
+                    if (polygon.length == 4) {
+                        drawHrombus(polygon, context);
+
+                        document.getElementById("message").innerHTML = "Задайте координаты первой диагонали:"
+                        polygon = []
+                    }
+                }
+                inputElement.value = ''
+            }
         }
     })
 
