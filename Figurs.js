@@ -3,38 +3,25 @@ function drawLine(pointArray, aContext) {
         document.getElementById("message").innerHTML = "Задайте следующую координату точки:"
         return
     }
-
+    
     pointArray = scaledY(pointArray);
-    let vertex;
-
-    vertex = pointArray[0];
-
-    aContext.beginPath();
-    aContext.strokeStyle = "black"
-    aContext.lineWidth = 1;
-    aContext.moveTo(vertex.x, vertex.y);
-
-
-    for (let i = 1; i < pointArray.length; i++) {
-        vertex = pointArray[i]
-        aContext.lineTo(vertex.x, vertex.y);
-    }
-
+    drawPoint(pointArray, aContext);
+    
     aContext.stroke();
     aContext.closePath();
 
-    pointArray == scaledY(pointArray)
+    pointArray == scaledY(pointArray);
 }
 
 function stringToCoordinate(aString) {
     let coord;
-
+    
     try {
-        coord = aString.split(';')
+        coord = aString.split(';');
         coord = coord.map(each => Number(each));
         return coord
     } catch (e) {
-        console.error("что-то пошло не так")
+        console.error("что-то пошло не так");
         return undefined
     }
 }
@@ -44,39 +31,38 @@ function clickOnEnter(event) {
 }
 
 function drawTriangle(pointArray, aContext) {
-    if (pointArray.length < 3) {
-        document.getElementById("message").innerHTML = "Задайте следущую координату через ';'"
-        return
-    }
-
     pointArray = scaledY(pointArray);
+    drawPoint(pointArray, aContext);
 
-    drawCanvas(aContext, pointArray);
+    const vertex = pointArray[0];
+    aContext.lineTo(vertex.x, vertex.y);
+    
+    aContext.stroke();
+    aContext.closePath();
 }
 
 
+
 function drawReactangle(pointArray, aContext) {
-    debugger
     pointArray = scaledY(pointArray);
     let firstPoint = pointArray[0];
     let secondPoint = pointArray[1]
-
+    
     aContext.beginPath();
     aContext.strokeStyle = "black"
-        
+    
     aContext.moveTo(firstPoint.x, firstPoint.y);
-    aContext.lineTo(secondPoint.x, firstPoint.y);
+    aContext.lineTo(firstPoint.x, secondPoint.y);
     aContext.lineTo(secondPoint.x, secondPoint.y);
     aContext.lineTo(secondPoint.x, firstPoint.y);
     aContext.lineTo(firstPoint.x, firstPoint.y);
-
     aContext.stroke();
 }
 
 function drawCircle(pointArray, rad, aContext) {
     pointArray = scaledY(pointArray);
     let vertex = pointArray[0];
-
+    
     aContext.beginPath();
     aContext.strokeStyle = "black"
     aContext.arc(vertex.x, vertex.y, rad, 0, 2*Math.PI);
@@ -84,31 +70,28 @@ function drawCircle(pointArray, rad, aContext) {
     
 }
 
+function drawPoint(array, aContext) {
+    aContext.beginPath();
+    aContext.strokeStyle = "black"
+    aContext.lineWidth = 1;
+    
+    let vertex = array[0]
+    aContext.moveTo(vertex.x, vertex.y);
+    
+    for (let i = 1; i < array.length; i++) {
+        vertex = array[i]
+        aContext.lineTo(vertex.x, vertex.y);
+    }    
+}
+
 function scaledY(array) {
     for (let i = 0; i < array.length; i++) {
         vertex = array[i]
-        vertex.y = 800 - vertex.y
+        vertex.y = 800 - vertex.y   
     }
 
     return array
-}
 
-function drawCanvas(aContext, pointArray) {
-    aContext.beginPath();
-
-    let vertex = pointArray[0]
-    aContext.moveTo(vertex.x, vertex.y);
-
-    for (let i = 1; i < pointArray.length; i++) {
-        vertex = pointArray[i]
-        aContext.lineTo(vertex.x, vertex.y);
-    }
-
-    vertex = pointArray[0]
-    aContext.lineTo(vertex.x, vertex.y);
-
-    aContext.stroke();
-    aContext.closePath();
 }
 
 function coordinateTable(width, heigth, aContext) {

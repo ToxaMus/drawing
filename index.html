@@ -50,6 +50,7 @@
         geometryType = geometryTypeElement.value;
         num = 0;
         polygon = [];
+        document.getElementById("message").innerHTML = "Задайте координату точки:"
     })
 
     let coord;
@@ -69,9 +70,16 @@
             }
 
             if (geometryType === 'triangle') {
-                polygon.push({ x: coord[0], y: coord[1] });
-
-                drawTriangle(polygon, context)
+                if (!errorCoordinate(coord)) {
+                    polygon.push({ x: coord[0], y: coord[1] })
+                    document.getElementById("message").innerHTML = "Задайте следущую координату через ';'" 
+                }
+                
+                if (polygon.length === 3) {
+                    drawTriangle(polygon, context);
+                    polygon = []
+                    document.getElementById("message").innerHTML = "Задайте координату точки:"
+               }
             }
 
             if (geometryType === 'rectangle') {
@@ -84,6 +92,7 @@
                     if (polygon.length == 2) {
                         drawReactangle(polygon, context)
                         polygon = [];
+                        document.getElementById("message").innerHTML = "Задайте координату точки:"
                     }
                 }
             }
@@ -102,6 +111,7 @@
 
                     polygon = [];
                     num = 0;
+                    document.getElementById("message").innerHTML = "Задайте координату точки:"
                 }
 
                 if (polygon.length == 1) {
