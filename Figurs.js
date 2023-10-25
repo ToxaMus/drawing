@@ -1,9 +1,4 @@
 function drawLine(pointArray, aContext) {
-    if (pointArray.length < 2) {
-        document.getElementById("message").innerHTML = "Задайте следующую координату точки:"
-        return
-    }
-    
     pointArray = scaledY(pointArray);
     drawPoint(pointArray, aContext);
     
@@ -44,35 +39,37 @@ function drawTriangle(pointArray, aContext) {
 function drawReactangle(pointArray, aContext) {
     pointArray = scaledY(pointArray);
     let firstPoint = pointArray[0];
-    let secondPoint = pointArray[1]
-    
-    aContext.beginPath();
-    aContext.strokeStyle = "black"
+    let secondPoint = pointArray[1];
+
+    drawPointForReactangle(aContext, firstPoint, secondPoint);
+}
+
+function drawPointForReactangle(aContext, firstPoint, secondPoint) {    
+    drawingCriteria(aContext);
     
     aContext.moveTo(firstPoint.x, firstPoint.y);
     aContext.lineTo(firstPoint.x, secondPoint.y);
     aContext.lineTo(secondPoint.x, secondPoint.y);
     aContext.lineTo(secondPoint.x, firstPoint.y);
     aContext.lineTo(firstPoint.x, firstPoint.y);
-    aContext.stroke();
+    aContext.stroke(); 
+    aContext.closePath();
+
 }
 
 function drawCircle(pointArray, rad, aContext) {
     pointArray = scaledY(pointArray);
     let vertex = pointArray[0];
     
-    aContext.beginPath();
-    aContext.strokeStyle = "black"
+    drawingCriteria(aContext);
+
     aContext.arc(vertex.x, vertex.y, rad, 0, 2*Math.PI);
-    aContext.stroke() 
-    
+    aContext.stroke();
+    aContext.closePath(); 
 }
 
 function drawPoint(array, aContext) {
-    aContext.beginPath();
-    aContext.strokeStyle = "black"
-    aContext.lineWidth = 1;
-    
+    drawingCriteria(aContext);
     let vertex = array[0]
     aContext.moveTo(vertex.x, vertex.y);
     
@@ -84,29 +81,59 @@ function drawPoint(array, aContext) {
 
 function drawHrombus(pointArray, aContext) {
     pointArray = scaledY(pointArray);
+    drawPointForHrombus(aContext, pointArray);
+}
 
-    aContext.beginPath();
-    aContext.strokeStyle = "black"
-    aContext.lineWidth = 1;
-   
+function drawPointForHrombus(aContext, pointArray) {
+    drawingCriteria(aContext);
+    
     let vertex = pointArray[2];
     aContext.moveTo(vertex.x, vertex.y);
-
+    
     vertex = pointArray[3];
     aContext.lineTo(vertex.x, vertex.y);
     
     vertex = pointArray[1];
     aContext.lineTo(vertex.x, vertex.y);
-
+    
     vertex = pointArray[2];
     aContext.lineTo(vertex.x, vertex.y);
-
+    
     vertex = pointArray[0];
     aContext.lineTo(vertex.x, vertex.y);
     
     vertex = pointArray[3];
     aContext.lineTo(vertex.x, vertex.y);
     aContext.stroke();  
+}
+
+function drawParallelogram(aContext, pointArray) {
+    pointArray = scaledY(pointArray);
+    drawPointForParalleogram(aContext, pointArray);
+}
+
+function drawPointForParalleogram(aContext, pointArray) {
+    drawingCriteria(aContext);
+    
+    let vertex = pointArray[1];
+    aContext.moveTo(vertex.x, vertex.y);
+    
+    vertex = pointArray[3];
+    aContext.lineTo(vertex.x, vertex.y);
+    
+    vertex = pointArray[2];
+    aContext.lineTo(vertex.x, vertex.y);
+     
+    vertex = pointArray[0];
+    aContext.lineTo(vertex.x, vertex.y);
+     
+    aContext.stroke();  
+}
+
+function drawingCriteria (aContext) {
+    aContext.beginPath();
+    aContext.strokeStyle = "black"
+    aContext.lineWidth = 1;
 }
 
 function scaledY(array) {
