@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <link href="main.css" rel="stylesheet">
     <script src="Figurs.js"></script>
 </head>
@@ -8,7 +9,11 @@
 <body>
     <div style="margin: 10px;">
         <canvas id="lineY" width="40" height="800"></canvas>
-        <canvas id="canvas" width="800" height="800"></canvas>
+        <canvas id="canvas" width="800" height="800">
+            <canvas id="canvas" width="800" height="800" style="flex: 1; margin-right: 2em;">
+                <div style="flex: 1; margin-right: 2em;">VNJ</div>
+            </canvas>
+        </canvas>
     </div>
 
     <canvas id="lineX" width="800" height="33" style="margin-bottom: 1em"></canvas>
@@ -22,6 +27,7 @@
             <option value="rhombus">ромб</option>
             <option value="parallelogram">параллелограмм</option>
             <option value="trapezoid">трапеция</option>
+            <option value="rubber">резинка</option>
         </select>
     </div>
 
@@ -36,10 +42,7 @@
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
 
-    let canvasWidth = 800;
-    let canvasHeight = 800;
-
-    coordinateTable(canvasWidth, canvasHeight, context)
+    coordinateTable(context)
     rulerY();
     rulerX();
 
@@ -53,31 +56,22 @@
         geometryType = geometryTypeElement.value;
         num = 0;
         polygon = [];
-
-        if (geometryType === "rhombus") {
-            document.getElementById("message").innerHTML = "Задайте координаты первой диагонали:"
-        } else if (geometryType === "parallelogram" || geometryType === "trapezoid") {
-            document.getElementById("message").innerHTML = "Задайте координаты точек первой прямой:"
-        }
+        newFigure(geometryType);
     })
 
     let coord;
     let radius;
+    let width;
+    let height;
 
     const inputElement = document.getElementById("coordinateInput");
 
     inputElement.addEventListener('keyup', (event) => {
         if (event.code == "Escape") {
-            num = 0;
+            newFigure(geometryType);
+            num = 0
             polygon = [];
-    
-            if (geometryType === "rhombus") {
-                document.getElementById("message").innerHTML = "Задайте координаты первой диагонали:"
-            } else if (geometryType === "parallelogram" || geometryType === "trapezoid") {
-                document.getElementById("message").innerHTML = "Задайте координаты точек первой прямой:"
-            } else {
-                document.getElementById("message").innerHTML = "Задайте координату точки:"
-            }            
+            width = undefined;
         }
 
         if (clickOnEnter(event)) {
@@ -86,7 +80,11 @@
             if (geometryType === 'line' || geometryType === undefined) {
                 if (!errorCoordinate(coord)) {
                     polygon.push({ x: coord[0], y: coord[1] });
-                    drawLine(polygon, context);
+                    document.getElementById("message").innerHTML = "Задайте следущую координату через ';':"
+                }
+
+                if (polygon.length > 1) {
+                    drawLine(polygon, context)
                 }
             }
 
@@ -104,17 +102,15 @@
             }
 
             if (geometryType === 'rectangle') {
-                if (polygon.length < 2) {
-                    if (!errorCoordinate(coord)) {
-                        polygon.push({ x: coord[0], y: coord[1] })
-                        document.getElementById("message").innerHTML = "Задайте накрестлежащую координату"
-                    }
+                if (polygon.length < 2 && !errorCoordinate(coord)) {
+                    polygon.push({ x: coord[0], y: coord[1] })
+                    document.getElementById("message").innerHTML = "Задайте накрестлежащую координату"
+                }
 
-                    if (polygon.length == 2) {
-                        drawReactangle(polygon, context)
-                        polygon = [];
-                        document.getElementById("message").innerHTML = "Задайте координату точки:"
-                    }
+                if (polygon.length == 2) {
+                    drawReactangle(polygon, context, geometryType)
+                    polygon = [];
+                    document.getElementById("message").innerHTML = "Задайте координату точки:"
                 }
             }
 
@@ -126,13 +122,13 @@
                     }
                 }
 
-                if (num == 1 && !errorNigativeData(coord[0])) {
+                if (num == 1 && !errorData(coord[0])) {
                     radius = coord[0];
-                    drawCircle(polygon, radius, context)
+                    drawCircle(polygon, radius, context);
 
                     polygon = [];
                     num = 0;
-                    document.getElementById("message").innerHTML = "Задайте координату точки:"
+                    document.getElementById("message").innerHTML = "Задайте координату точки:";
                 }
 
                 if (polygon.length == 1) {
@@ -146,9 +142,9 @@
                         polygon.push({ x: coord[0], y: coord[1] });
 
                         if (polygon.length === 2) {
-                            document.getElementById("message").innerHTML = "Задайте координаты второй диагонали:"
-                
-                            drawLine(polygon, context)
+                            document.getElementById("message").innerHTML = "Задайте координаты второй диагонали:";
+
+                            drawLine(polygon, context);
                         }
 
                     }
@@ -156,38 +152,65 @@
                     if (polygon.length == 4) {
                         drawHrombus(polygon, context);
 
-                        document.getElementById("message").innerHTML = "Задайте координаты первой диагонали:"
-                        polygon = []
+                        document.getElementById("message").innerHTML = "Задайте координаты первой диагонали:";
+                        polygon = [];
 
                     }
                 }
-
             }
+
             if (geometryType === "parallelogram" || geometryType === "trapezoid") {
                 if (polygon.length <= 4) {
                     if (!errorCoordinate(coord)) {
                         polygon.push({ x: coord[0], y: coord[1] });
 
                         if (polygon.length == 2) {
-                            document.getElementById("message").innerHTML = "Задайте координаты параллельной этой прямой"
+                            document.getElementById("message").innerHTML = "Задайте координаты параллельной этой прямой";
 
                             drawLine(polygon, context);
                         }
-                    }    
-                } 
+                    }
+                }
 
                 if (polygon.length == 4) {
-                    drawParallelogram(context, polygon)
+                    drawParallelogram(context, polygon);
 
-                    document.getElementById("message").innerHTML = "Задайте координаты точек первой прямой:"
-                    polygon = []
+                    document.getElementById("message").innerHTML = "Задайте координаты точек первой прямой:";
+                    polygon = [];
+                }
 
+            }
+
+            if (geometryType == "rubber") {
+                if (polygon.length < 1 && !errorCoordinate(coord)) {
+                    polygon.push({ x: coord[0], y: coord[1] });
+                    document.getElementById("message").innerHTML = "Задайте длину";
+                }
+
+                if (!errorData(width) ) {
+                    height = coord[0];
+                    rubber(polygon, width, height, context);
+
+                    polygon = [];
+                    num = 0;
+                    width = undefined;
+                    document.getElementById("message").innerHTML = "Задайте координату точки:";                                      
+                }
+
+                if (polygon.length == 1 && num == 1 && !errorData(coord[0])) {
+                    width = coord[0];
+                    document.getElementById("message").innerHTML = "Задайте ширину";   
+                }
+
+                if (polygon.length == 1) {
+                    num = 1; 
                 }
             }
-            inputElement.value = ''
+
+            inputElement.value = '';
         }
     })
 
 </script>
 
-</html>     
+</html>

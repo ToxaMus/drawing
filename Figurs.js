@@ -1,7 +1,7 @@
 function drawLine(pointArray, aContext) {
     pointArray = scaledY(pointArray);
     drawPoint(pointArray, aContext);
-    
+
     aContext.stroke();
     aContext.closePath();
 
@@ -10,7 +10,7 @@ function drawLine(pointArray, aContext) {
 
 function stringToCoordinate(aString) {
     let coord;
-    
+
     try {
         coord = aString.split(';');
         coord = coord.map(each => Number(each));
@@ -31,7 +31,7 @@ function drawTriangle(pointArray, aContext) {
 
     const vertex = pointArray[0];
     aContext.lineTo(vertex.x, vertex.y);
-    
+
     aContext.stroke();
     aContext.closePath();
 }
@@ -44,39 +44,38 @@ function drawReactangle(pointArray, aContext) {
     drawPointForReactangle(aContext, firstPoint, secondPoint);
 }
 
-function drawPointForReactangle(aContext, firstPoint, secondPoint) {    
+function drawPointForReactangle(aContext, firstPoint, secondPoint) {
     drawingCriteria(aContext);
-    
+
     aContext.moveTo(firstPoint.x, firstPoint.y);
     aContext.lineTo(firstPoint.x, secondPoint.y);
     aContext.lineTo(secondPoint.x, secondPoint.y);
     aContext.lineTo(secondPoint.x, firstPoint.y);
     aContext.lineTo(firstPoint.x, firstPoint.y);
-    aContext.stroke(); 
+    aContext.stroke();
     aContext.closePath();
-
 }
 
 function drawCircle(pointArray, rad, aContext) {
     pointArray = scaledY(pointArray);
     let vertex = pointArray[0];
-    
+
     drawingCriteria(aContext);
 
-    aContext.arc(vertex.x, vertex.y, rad, 0, 2*Math.PI);
+    aContext.arc(vertex.x, vertex.y, rad, 0, 2 * Math.PI);
     aContext.stroke();
-    aContext.closePath(); 
+    aContext.closePath();
 }
 
 function drawPoint(array, aContext) {
     drawingCriteria(aContext);
     let vertex = array[0]
     aContext.moveTo(vertex.x, vertex.y);
-    
+
     for (let i = 1; i < array.length; i++) {
         vertex = array[i]
         aContext.lineTo(vertex.x, vertex.y);
-    }    
+    }
 }
 
 function drawHrombus(pointArray, aContext) {
@@ -86,25 +85,25 @@ function drawHrombus(pointArray, aContext) {
 
 function drawPointForHrombus(aContext, pointArray) {
     drawingCriteria(aContext);
-    
+
     let vertex = pointArray[2];
     aContext.moveTo(vertex.x, vertex.y);
-    
+
     vertex = pointArray[3];
     aContext.lineTo(vertex.x, vertex.y);
-    
+
     vertex = pointArray[1];
     aContext.lineTo(vertex.x, vertex.y);
-    
+
     vertex = pointArray[2];
     aContext.lineTo(vertex.x, vertex.y);
-    
+
     vertex = pointArray[0];
     aContext.lineTo(vertex.x, vertex.y);
-    
+
     vertex = pointArray[3];
     aContext.lineTo(vertex.x, vertex.y);
-    aContext.stroke();  
+    aContext.stroke();
 }
 
 function drawParallelogram(aContext, pointArray) {
@@ -114,23 +113,23 @@ function drawParallelogram(aContext, pointArray) {
 
 function drawPointForParalleogram(aContext, pointArray) {
     drawingCriteria(aContext);
-    
+
     let vertex = pointArray[1];
     aContext.moveTo(vertex.x, vertex.y);
-    
+
     vertex = pointArray[3];
     aContext.lineTo(vertex.x, vertex.y);
-    
+
     vertex = pointArray[2];
     aContext.lineTo(vertex.x, vertex.y);
-     
+
     vertex = pointArray[0];
     aContext.lineTo(vertex.x, vertex.y);
-     
-    aContext.stroke();  
+
+    aContext.stroke();
 }
 
-function drawingCriteria (aContext) {
+function drawingCriteria(aContext) {
     aContext.beginPath();
     aContext.strokeStyle = "black"
     aContext.lineWidth = 1;
@@ -139,36 +138,36 @@ function drawingCriteria (aContext) {
 function scaledY(array) {
     for (let i = 0; i < array.length; i++) {
         vertex = array[i]
-        vertex.y = 800 - vertex.y   
+        vertex.y = 800 - vertex.y
     }
 
     return array
 
 }
 
-function coordinateTable(width, heigth, aContext) {
+function coordinateTable(aContext) {
     aContext.beginPath();
     aContext.strokeStyle = "#dfe2e8"
     aContext.lineWidth = 0.5;
 
-    xCoordinate(width, heigth, aContext);
-    yCoordinate(width, heigth, aContext)
+    xCoordinate(aContext);
+    yCoordinate(aContext)
 
     aContext.stroke();
 }
 
-function xCoordinate(width, heigth, aContext) {
-    for (let i = 0; i < width; i += 50) {
+function xCoordinate(aContext) {
+    for (let i = 0; i < 800; i += 50) {
         aContext.moveTo(i, 0);
-        aContext.lineTo(i, heigth);
+        aContext.lineTo(i, 800);
         aContext.closePath();
     }
 }
 
-function yCoordinate(width, heigth, aContext) {
-    for (let i = 0; i < heigth; i += 50) {
+function yCoordinate(aContext) {
+    for (let i = 0; i < 800; i += 50) {
         aContext.moveTo(0, i);
-        aContext.lineTo(width, i);
+        aContext.lineTo(800, i);
         aContext.closePath();
     }
 }
@@ -183,8 +182,12 @@ function rulerY() {
 
     for (let i = 0; i < 800; i += 50) {
         if (i != 0 && i != 800) {
+            if (i == 50) {
+                context.fillText("–", 14, 800 - 25);
+            }
             numberToString = i.toString();
-            context.fillText(numberToString, 7, (800 - i))
+            context.fillText(numberToString, 10, (800 - i))
+            context.fillText("–", 14, 800 - (i + 25));
         }
     }
 }
@@ -199,8 +202,15 @@ function rulerX() {
 
     for (let i = 0; i < 800; i += 50) {
         if (i != 0 && i != 800) {
+            if (i == 50) {
+                context.fillText("|", i - 25, 19);
+            }
+
+            context.fillText("|", i + 25, 19);
+
+            context.font = "9pt Arial"
             numberToString = i.toString();
-            context.fillText(numberToString, i, 19)
+            context.fillText(numberToString, i, 19);
         }
     }
 }
@@ -213,10 +223,31 @@ function errorCoordinate(pointArray) {
     return false
 }
 
-function errorNigativeData(number) {
-    if (number < 0) {
-        alert("error");
-        return true
+function newFigure(type) {
+    if (type === "rhombus") {
+        document.getElementById("message").innerHTML = "Задайте координаты первой диагонали:"
+    } else if (type === "parallelogram" || type === "trapezoid") {
+        document.getElementById("message").innerHTML = "Задайте координаты точек первой прямой:"
+    } else {
+        document.getElementById("message").innerHTML = "Задайте координату точки:"
     }
-    return false
+}
+
+function rubber(pointArray, aWidht, aHeight, aContext) {
+    pointArray = scaledY(pointArray);
+    const vertex = pointArray[0];
+
+    aContext.beginPath();
+    aContext.clearRect(vertex.x, vertex.y, aWidht, -aHeight);
+    aContext.stroke();
+    aContext.closePath();
+
+    coordinateTable(aContext);
+}
+
+function errorData(number) {
+    if (Number.isNaN(number) || number == undefined) {
+        return true;
+    }
+    return false;
 }
