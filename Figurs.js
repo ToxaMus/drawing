@@ -159,7 +159,7 @@ function coordinateTable(aContext) {
 function xCoordinate(aContext) {
     for (let i = 0; i < 800; i += 50) {
         aContext.moveTo(i, 0);
-        aContext.lineTo(i, 800);
+        aContext.lineTo(i, 800);                
         aContext.closePath();
     }
 }
@@ -247,7 +247,11 @@ function rubber(pointArray, aWidht, aHeight, aContext) {
 
 function errorData(number) {
     if (Number.isNaN(number) || number == undefined) {
+        alert("error");
         return true;
+    } else if (number <= 1) {
+        alert("error");
+        return true;  
     }
     return false;
 }
