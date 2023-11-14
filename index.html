@@ -21,12 +21,13 @@
     <div> Геометрическая фигура:
         <select id="geometryType">
             <option value="line">Линия</option>
-            <option value="triangle">Треугольник</option>
-            <option value="rectangle">Прямоугольник</option>
             <option value="circle">круг</option>
-            <option value="rhombus">ромб</option>
             <option value="parallelogram">параллелограмм</option>
+            <option value="rectangle">Прямоугольник</option>
+            <option value="tetrahedron">тетраэдр</option>
             <option value="trapezoid">трапеция</option>
+            <option value="triangle">Треугольник</option>
+            <option value="rhombus">ромб</option>
             <option value="rubber">резинка</option>
         </select>
     </div>
@@ -88,16 +89,36 @@
                 }
             }
 
-            if (geometryType === 'triangle') {
+            if (geometryType === 'triangle' || geometryType === 'tetrahedron') {
                 if (!errorCoordinate(coord)) {
                     polygon.push({ x: coord[0], y: coord[1] })
-                    document.getElementById("message").innerHTML = "Задайте следущую координату через ';'"
+
+                    if (geometryType == "triangle") {
+                        document.getElementById("message").innerHTML = "Задайте следущую координату через ';'"
+                    } else {
+                        if (polygon.length == 1) {
+                            document.getElementById("message").innerHTML = "Задайте следущую координату основания через ';'"
+                        } else {
+                            document.getElementById("message").innerHTML = "Задайте координату вершины через ';'"
+                        }
+                    }
                 }
 
                 if (polygon.length === 3) {
-                    drawTriangle(polygon, context);
-                    polygon = []
-                    document.getElementById("message").innerHTML = "Задайте координату точки:"
+                    polygon = drawTriangle(polygon, context);
+
+                    if (geometryType === 'triangle') {
+                        polygon = [];
+                        document.getElementById("message").innerHTML = "Задайте координату точки:"
+                    } else {
+                        document.getElementById("message").innerHTML = "Задайте координату точки под основанием:"
+                    }
+                }
+
+                if (polygon.length == 4) {
+                    drawTetrahedron(polygon, context);
+                    polygon = [];
+                    document.getElementById("message").innerHTML = "Задайте координаты первой точки основания:";
                 }
             }
 
@@ -127,7 +148,7 @@
                     drawCircle(polygon, radius, context);
 
                     polygon = [];
-                    num = 0;
+                    num = 0
                     document.getElementById("message").innerHTML = "Задайте координату точки:";
                 }
 
@@ -196,20 +217,24 @@
                         console.log(width, height)
                         polygon = [];
                         num = 0;
-                        width= undefined;
+                        width = undefined;
 
                         document.getElementById("message").innerHTML = "Задайте координату точки:";
                     }
                 }
 
-                if (num == 1 && (Number.isNaN(width) || width == undefined)) {
-                    if (!errorData(coord[0])) {
-                        width = coord[0];
-                        document.getElementById("message").innerHTML = "Задайте ширину";
+                if (num == 1) {
+                    if (Number.isNaN(width) || width == undefined) {
+                        if (!errorData(coord[0])) {
+                            width = coord[0];
+                            document.getElementById("message").innerHTML = "Задайте ширину";
 
-                        num =2;
-                   }
+                            num = 2;
+                        }
+                    }
                 }
+
+
 
                 if (polygon.length == 1 && (Number.isNaN(width) || width == undefined)) {
                     num = 1;

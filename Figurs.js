@@ -34,6 +34,8 @@ function drawTriangle(pointArray, aContext) {
 
     aContext.stroke();
     aContext.closePath();
+
+    return pointArray = scaledY(pointArray);
 }
 
 function drawReactangle(pointArray, aContext) {
@@ -69,13 +71,16 @@ function drawCircle(pointArray, rad, aContext) {
 
 function drawPoint(array, aContext) {
     drawingCriteria(aContext);
-    let vertex = array[0]
+    let vertex = array[0];
     aContext.moveTo(vertex.x, vertex.y);
 
     for (let i = 1; i < array.length; i++) {
-        vertex = array[i]
+        vertex = array[i];
         aContext.lineTo(vertex.x, vertex.y);
     }
+
+    aContext.stroke();
+    aContext.closePath()
 }
 
 function drawHrombus(pointArray, aContext) {
@@ -225,11 +230,13 @@ function errorCoordinate(pointArray) {
 
 function newFigure(type) {
     if (type === "rhombus") {
-        document.getElementById("message").innerHTML = "Задайте координаты первой диагонали:"
+        document.getElementById("message").innerHTML = "Задайте координаты первой диагонали:";
     } else if (type === "parallelogram" || type === "trapezoid") {
-        document.getElementById("message").innerHTML = "Задайте координаты точек первой прямой:"
+        document.getElementById("message").innerHTML = "Задайте координаты точек первой прямой:";
+    } else if (type == "tetrahedron") {
+        document.getElementById("message").innerHTML = "Задайте координаты первой точки основания:";
     } else {
-        document.getElementById("message").innerHTML = "Задайте координату точки:"
+        document.getElementById("message").innerHTML = "Задайте координату точки:";
     }
 }
 
@@ -254,4 +261,41 @@ function errorData(number) {
         return true;  
     }
     return false;
+}
+
+function drawTetrahedron(pointArray, aContext) {
+    pointArray = scaledY(pointArray);
+    
+    dottedLine(aContext, pointArray);
+    tetrahedronEdges(pointArray, aContext)
+}
+
+function dottedLine(aContext, pointArray) {
+    const firstVertexBase = pointArray[0];
+    const secondVertexBase = pointArray[1]
+    
+    aContext.beginPath();
+    
+    for (let i = 0; i + firstVertexBase.x < secondVertexBase.x; i +=20) {
+        let coordX = i+firstVertexBase.x;
+        aContext.clearRect(coordX, firstVertexBase.y, 10, -1);
+        aContext.stroke();
+        aContext.closePath();
+    }
+    
+}
+
+function tetrahedronEdges(pointArray, aContext) {
+    let vertex;
+    const point = pointArray[3];
+
+    aContext.beginPath();
+    for(let i = 0; i < pointArray.length; i++) {
+        vertex = pointArray[i];
+        aContext.moveTo(vertex.x, vertex.y);
+        aContext.lineTo(point.x, point.y); 
+    }
+
+    aContext.stroke();
+    aContext.closePath();
 }
