@@ -1,32 +1,34 @@
-<html>
+ <html>
 
 <head>
     <meta charset="UTF-8">
+    <title>чертёжник</title>
+    <link rel="icon" href="icon.png" type="images/icon-x">
     <link href="main.css" rel="stylesheet">
     <script src="Figurs.js"></script>
 </head>
 
 <body>
-    <div style="margin: 10px;">
+    <div style="display: flex; flex-direction: row; margin: 10px;">
         <canvas id="lineY" width="40" height="800"></canvas>
-        <canvas id="canvas" width="800" height="800">
-            <canvas id="canvas" width="800" height="800" style="flex: 1; margin-right: 2em;">
-                <div style="flex: 1; margin-right: 2em;">VNJ</div>
-            </canvas>
-        </canvas>
+        <canvas id="canvas" width="800" height="800" ></canvas>
+        <div style="margin-left: 2em; "> 
+            <p>Используйте TAB для перемещения со списка фигур на поле ввода и SHIFT+TAB - в обратную сторону. </p>
+            <p>ENTER - открытия списка и выбирания фигур.</p>
+            <p>Стрелки управления для перемещения между типами фигур.</p>
+            
+        </div>
     </div>
-
     <canvas id="lineX" width="800" height="33" style="margin-bottom: 1em"></canvas>
 
     <div> Геометрическая фигура:
         <select id="geometryType">
-            <option value="line">Линия</option>
+            <option value="line">линия</option>
             <option value="circle">круг</option>
-            <option value="parallelogram">параллелограмм</option>
-            <option value="rectangle">Прямоугольник</option>
+            <option value="rectangle">прямоугольник</option>
             <option value="tetrahedron">тетраэдр</option>
             <option value="trapezoid">трапеция</option>
-            <option value="triangle">Треугольник</option>
+            <option value="triangle">треугольник</option>
             <option value="rhombus">ромб</option>
             <option value="rubber">резинка</option>
         </select>
@@ -180,10 +182,10 @@
                 }
             }
 
-            if (geometryType === "parallelogram" || geometryType === "trapezoid") {
+            if (geometryType == "parallelogram" || geometryType == "trapezoid") {
                 if (polygon.length <= 4) {
                     if (!errorCoordinate(coord)) {
-                        polygon.push({ x: coord[0], y: coord[1] });
+                        polygon.push({ x: coord[0], y: coord[1] })
 
                         if (polygon.length == 2) {
                             document.getElementById("message").innerHTML = "Задайте координаты параллельной этой прямой";
@@ -197,9 +199,8 @@
                     drawParallelogram(context, polygon);
 
                     document.getElementById("message").innerHTML = "Задайте координаты точек первой прямой:";
-                    polygon = [];
+                        polygon = [];
                 }
-
             }
 
             if (geometryType == "rubber") {

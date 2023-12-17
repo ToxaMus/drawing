@@ -1,10 +1,6 @@
 function drawLine(pointArray, aContext) {
-    pointArray = scaledY(pointArray);
+    pointArray = scaledY(pointArray);       
     drawPoint(pointArray, aContext);
-
-    aContext.stroke();
-    aContext.closePath();
-
     pointArray == scaledY(pointArray);
 }
 
@@ -26,16 +22,13 @@ function clickOnEnter(event) {
 }
 
 function drawTriangle(pointArray, aContext) {
-    pointArray = scaledY(pointArray);
+    scaledY(pointArray);
     drawPoint(pointArray, aContext);
 
-    const vertex = pointArray[0];
-    aContext.lineTo(vertex.x, vertex.y);
-
-    aContext.stroke();
     aContext.closePath();
-
-    return pointArray = scaledY(pointArray);
+    aContext.stroke();
+ 
+    scaledY(pointArray);
 }
 
 function drawReactangle(pointArray, aContext) {
@@ -59,7 +52,7 @@ function drawPointForReactangle(aContext, firstPoint, secondPoint) {
 }
 
 function drawCircle(pointArray, rad, aContext) {
-    pointArray = scaledY(pointArray);
+    scaledY(pointArray);
     let vertex = pointArray[0];
 
     drawingCriteria(aContext);
@@ -73,18 +66,16 @@ function drawPoint(array, aContext) {
     drawingCriteria(aContext);
     let vertex = array[0];
     aContext.moveTo(vertex.x, vertex.y);
-
+    
     for (let i = 1; i < array.length; i++) {
         vertex = array[i];
         aContext.lineTo(vertex.x, vertex.y);
     }
-
     aContext.stroke();
-    aContext.closePath()
 }
 
 function drawHrombus(pointArray, aContext) {
-    pointArray = scaledY(pointArray);
+    scaledY(pointArray);
     drawPointForHrombus(aContext, pointArray);
 }
 
@@ -112,7 +103,7 @@ function drawPointForHrombus(aContext, pointArray) {
 }
 
 function drawParallelogram(aContext, pointArray) {
-    pointArray = scaledY(pointArray);
+    scaledY(pointArray);
     drawPointForParalleogram(aContext, pointArray);
 }
 
@@ -164,7 +155,7 @@ function coordinateTable(aContext) {
 function xCoordinate(aContext) {
     for (let i = 0; i < 800; i += 50) {
         aContext.moveTo(i, 0);
-        aContext.lineTo(i, 800);                
+        aContext.lineTo(i, 800);
         aContext.closePath();
     }
 }
@@ -258,14 +249,14 @@ function errorData(number) {
         return true;
     } else if (number <= 1) {
         alert("error");
-        return true;  
+        return true;
     }
     return false;
 }
 
 function drawTetrahedron(pointArray, aContext) {
     pointArray = scaledY(pointArray);
-    
+
     dottedLine(aContext, pointArray);
     tetrahedronEdges(pointArray, aContext)
 }
@@ -273,29 +264,29 @@ function drawTetrahedron(pointArray, aContext) {
 function dottedLine(aContext, pointArray) {
     const firstVertexBase = pointArray[0];
     const secondVertexBase = pointArray[1]
-    
+
     aContext.beginPath();
-    
-    for (let i = 0; i + firstVertexBase.x < secondVertexBase.x; i +=20) {
-        let coordX = i+firstVertexBase.x;
+
+    for (let i = 0; i + firstVertexBase.x < secondVertexBase.x; i += 20) {
+        let coordX = i + firstVertexBase.x;
         aContext.clearRect(coordX, firstVertexBase.y, 10, -1);
         aContext.stroke();
         aContext.closePath();
     }
-    
+
 }
 
 function tetrahedronEdges(pointArray, aContext) {
     let vertex;
-    const point = pointArray[3];
 
     aContext.beginPath();
-    for(let i = 0; i < pointArray.length; i++) {
+    for (let i = 0; i < pointArray.length; i++) {
         vertex = pointArray[i];
         aContext.moveTo(vertex.x, vertex.y);
-        aContext.lineTo(point.x, point.y); 
+        aContext.lineTo(point.x, point.y);
     }
 
     aContext.stroke();
-    aContext.closePath();
+    aContext.closePath(); 
+    
 }
