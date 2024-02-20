@@ -290,3 +290,51 @@ function tetrahedronEdges(pointArray, aContext) {
     aContext.closePath(); 
     
 }
+
+function translatePoint(array, aContext) {
+    array[1] = 800-array[1]
+
+    aContext.beginPath();
+    aContext.fillStyle = "red"
+    aContext.arc(array[0], array[1], 3, 0, 2 * Math.PI);   
+    aContext.fill();
+    aContext.closePath()
+
+    array[1] = 800-array[1]
+}
+
+function deledPoint(array, anContext) {
+    array[1] = 800-array[1]
+
+    anContext.beginPath();
+    anContext.clearRect(array[0]-3, array[1]+3, 6, -6 );
+    anContext.stroke();
+    anContext.closePath();
+
+    coordinateTable(anContext);
+
+    array[1] = 800-array[1]
+}
+
+function markerPoint(newArray, oldArray, aContext) {
+    if (newArray.length == 2 && newArray[1] != undefined) {
+        translatePoint(newArray, aContext)
+
+        if (newArray != oldArray && oldArray != undefined && newArray != undefined) {
+            deledPoint(oldCoord, aContext)
+        }
+        console.log(newArray, oldArray)
+        return oldArray = newArray
+    }
+}
+
+function ReplacingCommaDot(text) {  
+    for(let i =0; i <= text.length; i++) {
+        if (text[i] == ",") {
+           text = text.replace(",", ".")
+        }
+        console.log(text[i])
+    }
+
+    return text    
+}

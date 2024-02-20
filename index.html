@@ -1,4 +1,4 @@
- <html>
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -11,33 +11,37 @@
 <body>
     <div style="display: flex; flex-direction: row; margin: 10px;">
         <canvas id="lineY" width="40" height="800"></canvas>
-        <canvas id="canvas" width="800" height="800" ></canvas>
-        <div style="margin-left: 2em; "> 
-            <p>Используйте TAB для перемещения со списка фигур на поле ввода и SHIFT+TAB - в обратную сторону. </p>
-            <p>ENTER - открытия списка и выбирания фигур.</p>
-            <p>Стрелки управления для перемещения между типами фигур.</p>
-            
+        <canvas id="canvas" width="800" height="800"></canvas>
+        <div style="margin-left: 2em; ">
+            <div class="instruction">
+                <p>Используйте TAB для перемещения со списка фигур на поле ввода и SHIFT+TAB - в обратную сторону. </p>
+                <p>ENTER - открытия списка и выбирания фигур.</p>
+                <p>Стрелки управления для перемещения между типами фигур.</p>
+                <P>ESCAPE - удаление всех точек из памяти (при смене фигур происходит автоматически)</P>
+                <P>ESCAPE - удаление координаты из поле ввода</P>
+                <P><b>Используйте ;</b> для отделения координат: x<b>;</b>y</P>
+            </div>
+            <div>
+                <div style="margin-top: 30px;"> Геометрическая фигура:
+                    <select id="geometryType">
+                        <option value="line">линия</option>
+                        <option value="circle">круг</option>
+                        <option value="rectangle">прямоугольник</option>
+                        <option value="tetrahedron">тетраэдр</option>
+                        <option value="trapezoid">трапеция</option>
+                        <option value="triangle">треугольник</option>
+                        <option value="rhombus">ромб</option>
+                        <option value="rubber">резинка</option>
+                    </select>
+                </div>
+                <div id="message"> Задайте координату точки:</div>
+                <input type="text" id="coordinateInput">
+            </div>
+
         </div>
     </div>
     <canvas id="lineX" width="800" height="33" style="margin-bottom: 1em"></canvas>
 
-    <div> Геометрическая фигура:
-        <select id="geometryType">
-            <option value="line">линия</option>
-            <option value="circle">круг</option>
-            <option value="rectangle">прямоугольник</option>
-            <option value="tetrahedron">тетраэдр</option>
-            <option value="trapezoid">трапеция</option>
-            <option value="triangle">треугольник</option>
-            <option value="rhombus">ромб</option>
-            <option value="rubber">резинка</option>
-        </select>
-    </div>
-
-    <div>
-        <div id="message"> Задайте координату точки:</div>
-        <input type="text" id="coordinateInput">
-    </div>
 </body>
 
 <script>
@@ -66,19 +70,25 @@
     let radius;
     let width;
     let height;
+    let oldCoord;
 
     const inputElement = document.getElementById("coordinateInput");
 
     inputElement.addEventListener('keyup', (event) => {
+        coord = stringToCoordinate(ReplacingCommaDot(inputElement.value));
+        oldCoord = markerPoint(coord, oldCoord, context)
+
         if (event.code == "Escape") {
             newFigure(geometryType);
             num = 0
             polygon = [];
             width = undefined;
+
+            deledPoint(oldCoord, context)
         }
 
         if (clickOnEnter(event)) {
-            coord = stringToCoordinate(inputElement.value);
+            translatePoint(coord, context)
 
             if (geometryType === 'line' || geometryType === undefined) {
                 if (!errorCoordinate(coord)) {
@@ -169,7 +179,6 @@
 
                             drawLine(polygon, context);
                         }
-
                     }
 
                     if (polygon.length == 4) {
@@ -199,7 +208,7 @@
                     drawParallelogram(context, polygon);
 
                     document.getElementById("message").innerHTML = "Задайте координаты точек первой прямой:";
-                        polygon = [];
+                    polygon = [];
                 }
             }
 
