@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <meta charset="UTF-8">
     <title>чертёжник</title>
@@ -11,11 +10,15 @@
 <body>
     <div style="display: flex; flex-direction: row; margin: 10px;">
         <canvas id="lineY" width="40" height="800"></canvas>
-        <canvas id="canvas" width="800" height="800"></canvas>
-        <div style="margin-left: 2em; ">
+        <form id="container">
+            <canvas id="canvas" width="800" height="800"></canvas>
+            <canvas id="canvasFigurs" width="800" height="800"></canvas>
+        </form>
+        <div id="text">
             <div class="instruction">
-                <p>Используйте TAB для перемещения со списка фигур на поле ввода и SHIFT+TAB - в обратную сторону. </p>
-                <p>ENTER - открытия списка и выбирания фигур.</p>
+                <p>Используйте TAB для перемещения со списка фигур на поле ввода </p>
+                <p>SHIFT+TAB - для перемещения в обратную сторону.</p>
+                <p>ENTER - открытие списка и выбирание фигур.</p>
                 <p>Стрелки управления для перемещения между типами фигур.</p>
                 <P>ESCAPE - удаление всех точек из памяти (при смене фигур происходит автоматически)</P>
                 <P>ESCAPE - удаление координаты из поле ввода</P>
@@ -53,6 +56,9 @@
     rulerY();
     rulerX();
 
+    const canvasFigurs = document.getElementById("canvasFigurs");
+    const contextFigure = canvasFigurs.getContext("2d")
+
     const geometryTypeElement = document.getElementById("geometryType");
 
     let geometryType;
@@ -76,7 +82,7 @@
 
     inputElement.addEventListener('keyup', (event) => {
         coord = stringToCoordinate(ReplacingCommaDot(inputElement.value));
-        oldCoord = markerPoint(coord, oldCoord, context)
+        oldCoord = markerPoint(coord, oldCoord, contextFigure)
 
         if (event.code == "Escape") {
             newFigure(geometryType);
@@ -84,11 +90,11 @@
             polygon = [];
             width = undefined;
 
-            deledPoint(oldCoord, context)
+            deledPoint(oldCoord, contextFigure)
         }
 
         if (clickOnEnter(event)) {
-            translatePoint(coord, context)
+            translatePoint(coord, contextFigure)
 
             if (geometryType === 'line' || geometryType === undefined) {
                 if (!errorCoordinate(coord)) {
@@ -97,7 +103,7 @@
                 }
 
                 if (polygon.length > 1) {
-                    drawLine(polygon, context)
+                    drawLine(polygon, contextFigure)
                 }
             }
 
@@ -117,7 +123,7 @@
                 }
 
                 if (polygon.length === 3) {
-                    polygon = drawTriangle(polygon, context);
+                    polygon = drawTriangle(polygon, contextFigure);
 
                     if (geometryType === 'triangle') {
                         polygon = [];
@@ -128,7 +134,7 @@
                 }
 
                 if (polygon.length == 4) {
-                    drawTetrahedron(polygon, context);
+                    drawTetrahedron(polygon, contextFigure);
                     polygon = [];
                     document.getElementById("message").innerHTML = "Задайте координаты первой точки основания:";
                 }
@@ -141,7 +147,7 @@
                 }
 
                 if (polygon.length == 2) {
-                    drawReactangle(polygon, context, geometryType)
+                    drawReactangle(polygon, contextFigure, geometryType)
                     polygon = [];
                     document.getElementById("message").innerHTML = "Задайте координату точки:"
                 }
@@ -157,7 +163,7 @@
 
                 if (num == 1 && !errorData(coord[0])) {
                     radius = coord[0];
-                    drawCircle(polygon, radius, context);
+                    drawCircle(polygon, radius, contextFigure);
 
                     polygon = [];
                     num = 0
@@ -177,12 +183,12 @@
                         if (polygon.length === 2) {
                             document.getElementById("message").innerHTML = "Задайте координаты второй диагонали:";
 
-                            drawLine(polygon, context);
+                            drawLine(polygon, contextFigure);
                         }
                     }
 
                     if (polygon.length == 4) {
-                        drawHrombus(polygon, context);
+                        drawHrombus(polygon, contextFigure);
 
                         document.getElementById("message").innerHTML = "Задайте координаты первой диагонали:";
                         polygon = [];
@@ -199,13 +205,13 @@
                         if (polygon.length == 2) {
                             document.getElementById("message").innerHTML = "Задайте координаты параллельной этой прямой";
 
-                            drawLine(polygon, context);
+                            drawLine(polygon, contextFigure);
                         }
                     }
                 }
 
                 if (polygon.length == 4) {
-                    drawParallelogram(context, polygon);
+                    drawParallelogram(contextFigure, polygon);
 
                     document.getElementById("message").innerHTML = "Задайте координаты точек первой прямой:";
                     polygon = [];
@@ -222,7 +228,7 @@
                     if (!errorData(coord[0])) {
                         height = coord[0];
 
-                        rubber(polygon, width, height, context);
+                        rubber(polygon, width, height, contextFigure);
 
                         console.log(width, height)
                         polygon = [];

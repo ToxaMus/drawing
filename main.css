@@ -1,6 +1,7 @@
 #canvas  {
     border: 1px solid silver;
-    margin-left: 1em;
+    position: absolute;
+    z-index: -100;
 }
 
 #lineY {
@@ -14,4 +15,18 @@
 
 .instruction > p {
     color: red;
+}
+
+#canvasFigurs {
+    border: 1px solid silver;
+    margin: 0;
+    position: absolute;
+}
+
+#container {
+    margin-left: 1em;                       
+}
+
+#text {
+    margin-left: 45%;
 }

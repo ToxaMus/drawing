@@ -239,8 +239,6 @@ function rubber(pointArray, aWidht, aHeight, aContext) {
     aContext.clearRect(vertex.x, vertex.y, aWidht, -aHeight);
     aContext.stroke();
     aContext.closePath();
-
-    coordinateTable(aContext);
 }
 
 function errorData(number) {
@@ -310,8 +308,6 @@ function deledPoint(array, anContext) {
     anContext.clearRect(array[0]-3, array[1]+3, 6, -6 );
     anContext.stroke();
     anContext.closePath();
-
-    coordinateTable(anContext);
 
     array[1] = 800-array[1]
 }
